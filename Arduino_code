@@ -1,0 +1,31 @@
+#define REMOTEXY_MODE__HARDSERIAL
+#define REMOTEXY_SERIAL Serial
+#define REMOTEXY_SERIAL_SPEED 9600
+#include <RemoteXY.h>
+#pragma pack(push, 1)
+uint8_t RemoteXY_CONF[] =   // 53 bytes
+  { 255,2,0,0,0,46,0,17,0,0,0,31,1,106,200,1,1,2,0,2,29,27,44,22,0,2,26,31,31,79,78,0,79,70,70,0,2,30,72,44,22,0,2,26,31,31,79,78,0,79,70,70,0 };
+  Struct
+ {
+uint8_t relay_1; // =1 if switch ON and =0 if OFF
+uint8_t relay_2; // =1 if switch ON and =0 if OFF
+uint8_t connect_flag;  // =1 if wire connected, else =0
+} RemoteXY;
+#pragma pack(pop)
+#define PIN_RELAY_1   2
+#define PIN_RELAY_2  3
+
+void setup() 
+{
+  RemoteXY_Init (); 
+  pinMode (PIN_RELAY_1, OUTPUT);
+  pinMode (PIN_RELAY_2, OUTPUT);
+ }
+
+void loop() 
+{ 
+  RemoteXY_Handler ();
+  digitalWrite(PIN_RELAY_1, (RemoteXY.relay_1==0)?LOW:HIGH);
+  digitalWrite(PIN_RELAY_2, (RemoteXY.relay_2==0)?LOW:HIGH);
+  
+ }
